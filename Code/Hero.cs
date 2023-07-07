@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum MovementState {
+public enum MovementState {
     Moving,
     Jumping,
 }
@@ -12,23 +12,21 @@ public class Hero : MonoBehaviour {
 
     public MovementState MovState;
 
+    private Rigidbody2D RB;
+
     public float HoriziontalSpeed = 10;
         
-    void Start() {
-
+    private void Start() {
+        RB = GetComponent<Rigidbody2D>();
     }
 
-    void Update() {
-        switch(MovState) {
-
-        }
-        /*Vector3 v = Vector3.zero;
-        if (Input.GetKey(KeyCode.D)) {
-            v.x += Speed;
-        }
-        else if (Input.GetKey(KeyCode.A)) {
-            v.x -= Speed;
-        }
-        transform.position = transform.position + v * Time.deltaTime;*/
+    private void Update() {
+        Vector2 tgtVelocity = new Vector2(HoriziontalSpeed, 0);
+        transform.position += (Vector3) tgtVelocity * Time.deltaTime;
     }
+
+    /*private void FixedUpdate() {
+        Vector2 tgtVelocity = new Vector2(HoriziontalSpeed, 0);
+        RB.MovePosition(RB.position + tgtVelocity * Time.fixedDeltaTime);
+    }*/
 }
