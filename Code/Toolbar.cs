@@ -7,9 +7,9 @@ public class Toolbar : MonoBehaviour
 {
     public GameObject buttonPrefab;
 
-    public List<MinionData> minionList = new();
+    public List<MinionData> minionList = new List<MinionData>();
 
-    public List<KeyCode> hotkeys = new();
+    public List<KeyCode> hotkeys = new List<KeyCode>();
 
     private PlayerController playerController;
 

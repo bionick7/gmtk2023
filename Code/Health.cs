@@ -5,35 +5,34 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [Header("Set Properties")]
-    [SerializeField] int healthMax;
-    [SerializeField] LayerMask destroyContacts;
+    [SerializeField] private int healthMax;
+    //[SerializeField] LayerMask dammageContacts;
+    [SerializeField] private LayerMask destroyContacts;
 
     [Header("Internal")]
     [SerializeField] int healthCurrent;
 
-    private void Awake()
-    {
+    private void Awake() {
         healthCurrent = healthMax;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        TakeDamage();
+    private void OnCollisionEnter2D(Collision2D collision) {
+        int layerMask = 1 << collision.gameObject.layer;
+        //if ((layerMask & dammageContacts) != 0) {
+        //    TakeDamage();
+        //}
 
-        // A way for the Hero to Destroy Minions it touches.
-        int layer_match = destroyContacts & (1 << collision.gameObject.layer);
-        if (layer_match != 0)
-            Destroy(collision.gameObject);
+        if ((layerMask & destroyContacts) != 0) {
+            Destroy(gameObject);
+        }
     }
 
-    private void CheckDeath()
-    {
+    private void CheckDeath() {
         if(healthCurrent <= 0)
             Destroy(gameObject);
     }
 
-    public void TakeDamage(int amount = 1)
-    {
+    public void TakeDamage(int amount = 1) {
         healthCurrent -= amount;
         CheckDeath();
     }

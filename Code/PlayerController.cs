@@ -47,12 +47,8 @@ public class PlayerController : MonoBehaviour
 
         // Check Combination or Special Placement (ghost rules)
 
-        // Check Minion Count --> Need to highlight red
-        bool can_place = CheckMinionCount();
-
         // Check for Player Input to Place/Confirm
-        if (can_place)
-        {
+        if (Input.GetMouseButtonDown(0)) {
             PlaceHoldObject();
         }
     }
@@ -85,12 +81,20 @@ public class PlayerController : MonoBehaviour
         return minionCountCurrent < minionCountMax;
     }
 
-    private void PlaceHoldObject()
-    {
-        if (!holdObject || !Input.GetMouseButtonDown(0))
+    private void PlaceHoldObject() {
+        // Check Minion Count --> Need to highlight red
+        if (!holdObject || !CheckMinionCount()) {
             return;
+        }
+
+        if (!ghost.isInsideGhostField) {
+            return;
+        }
 
         Destroy(holdObject);
+
+        // ~~Do~interactions~here~~ Actually, deviate to Minion.FuseTo(_)
+        GameObject compagnion = ghost.targetMinion;
 
         GameObject spawn = Instantiate(selectedMinion.minionPrefab, mousePosition, Quaternion.identity);
         DestroyCallback destroy_callback = spawn.GetComponent<DestroyCallback>();
@@ -99,6 +103,10 @@ public class PlayerController : MonoBehaviour
             minionCountCurrent--;
             UpdateCounterText();
         });
+
+        if (compagnion != null) {
+            spawn.GetComponent<Minion>().FuseTo(compagnion.GetComponent<Minion>());
+        }
 
         // Update Count and Text
         minionCountCurrent++;

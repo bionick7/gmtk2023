@@ -12,21 +12,17 @@ public class GhostPlacement : MonoBehaviour
     private int terrainLayer;
     private int minionLayer;
 
-    private void Awake()
-    {
+    private void Awake() {
         ghostFieldLayer = LayerMask.NameToLayer("GhostField");
         terrainLayer = LayerMask.NameToLayer("Terrain");
         minionLayer = LayerMask.NameToLayer("Minion");
     }
 
-    private void Update()
-    {
+    private void Update() {
 
     }
 
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
+    private void OnTriggerEnter2D(Collider2D collision) {
         int layer = collision.gameObject.layer;
 
         // Check is inside of GhostField
@@ -45,8 +41,7 @@ public class GhostPlacement : MonoBehaviour
         // Check if inside of Minion
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
+    private void OnTriggerExit2D(Collider2D collision) {
         int layer = collision.gameObject.layer;
 
         // Check is outside of GhostField
