@@ -15,8 +15,8 @@ public class Bomb : Minion {
 	private float ExplostionCountdown = 0f;
 	public bool IsTicking = true;
 
-	protected override void Start() {
-		base.Start();
+	public override void Setup() {
+		base.Setup();
 
 		ExplostionCountdown = TimeUntilBoom;
 		CountdownDialMask = GetComponentInChildren<SpriteMask>();
@@ -49,6 +49,7 @@ public class Bomb : Minion {
 				health.TakeDamage(Dammage);
 			}
 		}
+		IsTicking = false;
 		StartCoroutine(ExplostionAnimation());
 	}
 

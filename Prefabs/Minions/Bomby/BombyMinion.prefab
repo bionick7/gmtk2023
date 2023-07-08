@@ -238,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanLand: 0
-  CanFuseAtRuntime: 0
+  CanInteractAtRuntime: 1
   ContactDmg: 0
   TriggerCollider: {fileID: 0}
   IsLanded: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
   IsPassive: 0
   TimePlaced: 0
   ExplostionRadius: 3
-  Dammage: 3
+  Dammage: 1
   TimeUntilBoom: 2
   InitVelocity: {x: 0, y: 0}
   ExplostionRadiusIndicator: {fileID: 252054844588525743}
@@ -342,7 +342,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -2413806693520163455, guid: b92acddc9d5759b4a9e9f46317bcd737, type: 3}
   m_Color: {r: 1, g: 0, b: 0.1746602, a: 1}
   m_FlipX: 0

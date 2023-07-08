@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanLand: 1
-  CanFuseAtRuntime: 0
+  CanInteractAtRuntime: 1
   ContactDmg: 0
   TriggerCollider: {fileID: 0}
   IsLanded: 0
@@ -172,11 +172,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601d5290458496947a22d18b4e0ad5f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthMax: 0
+  healthMax: 100
   destroyContacts:
     serializedVersion: 2
     m_Bits: 264
-  healthCurrent: 0
+  healthCurrent: 100
 --- !u!1 &2099008947852882456
 GameObject:
   m_ObjectHideFlags: 0

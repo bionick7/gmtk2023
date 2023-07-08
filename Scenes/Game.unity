@@ -1067,10 +1067,10 @@ MonoBehaviour:
   MaxDodgableMinionSpeed: 20
   Gravity: 10
   FloorHeight: 4.3
-  CanDoubleJump: 1
+  CanDoubleJump: 0
   UsedDoubleJump: 0
   MovState: 0
-  RaycastOrigin: {fileID: 1776053231}
+  BulletPrefab: {fileID: 3407144854206570878, guid: 12098e23a90f84349ab067f85157afaf, type: 3}
   Health: {fileID: 0}
 --- !u!61 &651637652
 BoxCollider2D:
@@ -1404,7 +1404,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 6.66
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

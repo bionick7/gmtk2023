@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GhostPlacement : MonoBehaviour
-{
+public class GhostPlacement : MonoBehaviour {
+
     public bool isInsideGhostField;
     public bool isInsideTerrain;
     public GameObject targetMinion;
@@ -31,6 +31,7 @@ public class GhostPlacement : MonoBehaviour
     }
 
     private void Update() {
+        const float VELOCITY_SCALE = 2f;
         if (Input.GetMouseButtonDown(0)) {
             spawnPosition = Camera.ScreenToWorldPoint(Input.mousePosition);
         }
@@ -38,7 +39,7 @@ public class GhostPlacement : MonoBehaviour
             LineRenderer.enabled = Input.GetMouseButton(0);
             Vector2 mousePos = Camera.ScreenToWorldPoint(Input.mousePosition);
             if (Input.GetMouseButton(0)) {
-                spawnVelocity = mousePos - spawnPosition;
+                spawnVelocity = (mousePos - spawnPosition) * VELOCITY_SCALE;
                 if (spawnVelocity.magnitude > maxVelocity) {
                     spawnVelocity = spawnVelocity.normalized * maxVelocity;
                 }
@@ -51,7 +52,7 @@ public class GhostPlacement : MonoBehaviour
             spawnPosition = Camera.ScreenToWorldPoint(Input.mousePosition);
             //LineRenderer.SetPositions(new Vector3[] { transform.position, transform.position });
         }
-        LineRenderer.SetPositions(new Vector3[] { spawnPosition, spawnPosition + spawnVelocity });
+        LineRenderer.SetPositions(new Vector3[] { spawnPosition, spawnPosition + spawnVelocity / VELOCITY_SCALE });
         transform.position = spawnPosition;
     }
 
@@ -59,16 +60,20 @@ public class GhostPlacement : MonoBehaviour
         int layer = collision.gameObject.layer;
 
         // Check is inside of GhostField
-        if (layer == ghostFieldLayer)
+        if (layer == ghostFieldLayer) {
             isInsideGhostField = true;
+        }
 
         // Check is inside of Terrain
-        if (layer == terrainLayer)
+        if (layer == terrainLayer) {
             isInsideTerrain = true;
+        }
 
         // Check is overlapping a Minion
-        if (layer == minionLayer)
+        if (layer == minionLayer) {
             targetMinion = collision.gameObject;
+            Debug.Log($"Enter {collision.gameObject}");
+        }
 
         // Check if inside of Terrain
         // Check if inside of Minion
@@ -86,7 +91,9 @@ public class GhostPlacement : MonoBehaviour
             isInsideTerrain = false;
 
         // Check is not overlapping a Minion
-        if (layer == minionLayer)
+        if (layer == minionLayer) {
             targetMinion = null;
+            Debug.Log($"Exit {collision.gameObject}");
+        }
     }
 }
