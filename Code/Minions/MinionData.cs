@@ -4,7 +4,9 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "MinionSO", menuName = "ScriptableObjects/MinionSO", order = 1)]
 public class MinionData : ScriptableObject {
-	public string Name = "Undefined";
+	public GameObject ghostPrefab;
+	public GameObject minionPrefab;
+
 	public float RespawnPeriod = 0f;
 	public int MaxVisibleUnits = 5;
 
