@@ -18,6 +18,9 @@ public class CameraController : MonoBehaviour {
     }
 
     private void Update() {
+        if (!Hero)
+            return;
+
         Vector3 pos = transform.position;
         pos.x = Hero.transform.position.x + Offset;
         transform.position = pos;
