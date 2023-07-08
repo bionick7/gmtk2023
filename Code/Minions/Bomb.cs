@@ -44,6 +44,7 @@ public class Bomb : Minion {
 
 	private void Explode() {
 		// TODO: animation
+		Debug.Log("Boom");
 		foreach (Health health in FindObjectsOfType<Health>()) {  // Explosion is indiscriminate
 			if (health.gameObject != gameObject && (health.transform.position - transform.position).magnitude <= ExplostionRadius) {
 				health.TakeDamage(Dammage);

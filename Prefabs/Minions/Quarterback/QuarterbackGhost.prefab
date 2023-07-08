@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -4498962572739182014}
   - component: {fileID: 7629264758728623692}
   - component: {fileID: -1832397553943581097}
-  m_Layer: 24
+  m_Layer: 7
   m_Name: QuarterbackGhost
   m_TagString: Untagged
   m_Icon: {fileID: 0}

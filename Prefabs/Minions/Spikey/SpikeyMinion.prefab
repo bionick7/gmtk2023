@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanLand: 1
   CanInteractAtRuntime: 1
-  ContactDmg: 0
+  ContactDmg: 1
   TriggerCollider: {fileID: 0}
   IsLanded: 0
   RB: {fileID: 0}

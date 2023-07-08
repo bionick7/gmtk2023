@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     // This way we can access things like placement rules or what unit to spawn.
     private MinionData selectedMinion;
 
-    private GameObject holdObject;
+    [SerializeField] private GameObject holdObject;
     private GhostPlacement ghost;
 
     // Private References

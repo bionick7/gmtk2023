@@ -72,7 +72,6 @@ public class GhostPlacement : MonoBehaviour {
         // Check is overlapping a Minion
         if (layer == minionLayer) {
             targetMinion = collision.gameObject;
-            Debug.Log($"Enter {collision.gameObject}");
         }
 
         // Check if inside of Terrain
@@ -93,7 +92,6 @@ public class GhostPlacement : MonoBehaviour {
         // Check is not overlapping a Minion
         if (layer == minionLayer) {
             targetMinion = null;
-            Debug.Log($"Exit {collision.gameObject}");
         }
     }
 }
