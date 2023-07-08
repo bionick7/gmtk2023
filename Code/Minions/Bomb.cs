@@ -22,7 +22,7 @@ public class Bomb : Minion {
 		CountdownDialMask = GetComponentInChildren<SpriteMask>();
 
 		RB.angularVelocity = Random.Range(-1f, 1f);
-		RB.velocity = InitVelocity;
+		//RB.velocity = InitVelocity;
 	}
 
 	private void Update() {

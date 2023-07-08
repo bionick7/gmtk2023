@@ -20,6 +20,9 @@ public class Hero : MonoBehaviour {
     public float Gravity = 0;
     public float FloorHeight = 0;
 
+    public bool CanDoubleJump = false;
+    public bool UsedDoubleJump = false;
+
     public MovementState MovState = MovementState.Moving;
 
     public Transform RaycastOrigin;
@@ -45,40 +48,52 @@ public class Hero : MonoBehaviour {
 
     private void FixedUpdate() {
         switch (MovState) {
-            case MovementState.Moving:
+            case MovementState.Moving: { 
                 Velocity = new Vector2(HoriziontalSpeed, 0);
 
                 float castDistance = JumpDistance * (1 + MaxDodgableMinionSpeed / HoriziontalSpeed);
-                RaycastHit2D hit = Physics2D.Raycast(RaycastOrigin.position, Vector2.right, castDistance, RaycastCollisionLayerMask);
+                RaycastHit2D hit = Physics2D.BoxCast(RB.position, Vector2.one, 0, Vector2.right, castDistance, RaycastCollisionLayerMask);
                 if (hit) {
-                    Debug.DrawLine(RaycastOrigin.position, hit.point);
+                    Debug.DrawLine(transform.position, hit.point);
                     float relative_vel_x = HoriziontalSpeed - hit.rigidbody.velocity.x;
                     float airTimeRequired = hit.distance / relative_vel_x;
                     float airTime = JumpDistance / HoriziontalSpeed;
                     if (airTimeRequired <= airTime) {
-                        MovState = MovementState.Jumping;
-                        //RB.bodyType = RigidbodyType2D.Dynamic;
-                        // t/2 = t_deceleration = v/g
-                        float v_y = airTime * Gravity / 2f;
-                        Velocity = new Vector2(HoriziontalSpeed, v_y);
-                        ExpectedJumpZenith = Time.time + airTime / 2;
-                        Debug.Log($"v = {Velocity}");
+                        Jump();
                     }
                 }
-                break;
-            case MovementState.Jumping:
+                break; }
+            case MovementState.Jumping: { 
+                if (CanDoubleJump && !UsedDoubleJump && Time.time > ExpectedJumpZenith) {
+                    RaycastHit2D hit = Physics2D.BoxCast(RB.position, Vector2.one * 1.5f, 0, Velocity.normalized, 100, RaycastCollisionLayerMask);
+                    Debug.DrawRay(RB.position, Velocity.normalized * 100);
+                    if (hit) {
+                        UsedDoubleJump = true;
+                        Jump();
+                    }
+                }
                 if (RB.position.y <= FloorHeight && Time.time > ExpectedJumpZenith) {
                     RB.position = new Vector2(RB.position.x, FloorHeight);
                     Velocity = new Vector2(HoriziontalSpeed, 0);
                     MovState = MovementState.Moving;
+                    UsedDoubleJump = false;
                     Debug.Log("Landing");
                 } else {
                     Velocity.y -= Gravity * Time.fixedDeltaTime;
                 }
-                break;
+                break; }
         }
         Vector2 p = RB.position + Velocity * Time.fixedDeltaTime;
         RB.MovePosition(p);
+    }
+
+    private void Jump() {
+        MovState = MovementState.Jumping;
+        float airTime = JumpDistance / HoriziontalSpeed;
+        float v_y = airTime * Gravity / 2f;
+        Velocity = new Vector2(HoriziontalSpeed, v_y);
+        ExpectedJumpZenith = Time.time + airTime / 2;
+        //Debug.Log($"v = {Velocity}");
     }
 
     /*private void OnCollisionEnter2D(Collision2D collision) {

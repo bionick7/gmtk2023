@@ -40,15 +40,12 @@ public class PlayerController : MonoBehaviour
         // Check for Cancel
         CancelHoldObject();
 
-        // Move the Object
-        MoveHoldObject();
-
         // Check Valid Placement
 
         // Check Combination or Special Placement (ghost rules)
 
         // Check for Player Input to Place/Confirm
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonUp(0)) {
             PlaceHoldObject();
         }
     }
@@ -56,7 +53,7 @@ public class PlayerController : MonoBehaviour
     private void CancelHoldObject()
     {
         // Right Click --> Remove Hold Object
-        if (Input.GetMouseButtonDown(1) && holdObject)
+        if (Input.GetMouseButtonUp(1) && holdObject)
         {
             Destroy(holdObject);
 
@@ -65,16 +62,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void MoveHoldObject()
-    {
-        if (!holdObject)
-            return;
-
-        // Camera to World Position
-        mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0;
-        holdObject.transform.position = mousePosition;
-    }
 
     private bool CheckMinionCount()
     {
@@ -97,9 +84,12 @@ public class PlayerController : MonoBehaviour
         GameObject compagnion = ghost.targetMinion;
 
         GameObject spawn = Instantiate(selectedMinion.minionPrefab, mousePosition, Quaternion.identity);
+        Rigidbody2D spawnRB = spawn.GetComponent<Rigidbody2D>();
+        spawnRB.velocity = ghost.spawnVelocity;
+        spawnRB.position = ghost.spawnPosition;
+        Debug.Log($"Launch {spawn} with v = {ghost.spawnVelocity}");
         DestroyCallback destroy_callback = spawn.GetComponent<DestroyCallback>();
-        destroy_callback.Subscribe(() =>
-        {
+        destroy_callback.Subscribe(() => {
             minionCountCurrent--;
             UpdateCounterText();
         });

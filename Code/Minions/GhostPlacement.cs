@@ -12,14 +12,47 @@ public class GhostPlacement : MonoBehaviour
     private int terrainLayer;
     private int minionLayer;
 
+    [HideInInspector] public Vector2 spawnPosition;
+    [HideInInspector] public Vector2 spawnVelocity;
+    public bool allowVelocity;
+    public float maxVelocity;
+    private Camera Camera;
+    private LineRenderer LineRenderer;
+
     private void Awake() {
         ghostFieldLayer = LayerMask.NameToLayer("GhostField");
         terrainLayer = LayerMask.NameToLayer("Terrain");
         minionLayer = LayerMask.NameToLayer("Minion");
     }
 
-    private void Update() {
+    private void Start() {
+        Camera = Camera.main;
+        LineRenderer = GetComponent<LineRenderer>();
+    }
 
+    private void Update() {
+        if (Input.GetMouseButtonDown(0)) {
+            spawnPosition = Camera.ScreenToWorldPoint(Input.mousePosition);
+        }
+        if (allowVelocity) {
+            LineRenderer.enabled = Input.GetMouseButton(0);
+            Vector2 mousePos = Camera.ScreenToWorldPoint(Input.mousePosition);
+            if (Input.GetMouseButton(0)) {
+                spawnVelocity = mousePos - spawnPosition;
+                if (spawnVelocity.magnitude > maxVelocity) {
+                    spawnVelocity = spawnVelocity.normalized * maxVelocity;
+                }
+            } else {
+                spawnPosition = mousePos;
+            }
+        } else {
+            LineRenderer.enabled = false;
+            spawnVelocity = Vector2.zero;
+            spawnPosition = Camera.ScreenToWorldPoint(Input.mousePosition);
+            //LineRenderer.SetPositions(new Vector3[] { transform.position, transform.position });
+        }
+        LineRenderer.SetPositions(new Vector3[] { spawnPosition, spawnPosition + spawnVelocity });
+        transform.position = spawnPosition;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
