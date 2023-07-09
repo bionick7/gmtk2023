@@ -714,7 +714,7 @@ MonoBehaviour:
   healthMax: 3
   destroyContacts:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   healthCurrent: 0
   AutoKill: 0
   isDead: 0
