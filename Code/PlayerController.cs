@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
         if (compagnion != null)
         {
-            spawn.GetComponent<Minion>().FuseTo(compagnion.GetComponent<Minion>());
+            spawn.GetComponent<Minion>().InteractTo(compagnion.GetComponent<Minion>());
         }
 
 
