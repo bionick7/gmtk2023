@@ -23,9 +23,12 @@ public abstract class Minion : MonoBehaviour {
 	[HideInInspector] public bool IsPassive = false;  // If e.g. carried by quarterback
 
 	protected Collider2D PhysicsCollider;
+	protected SoundTrigger SoundTrigger;
 
 	public float TimePlaced = 0;
 	public bool HasInteracted { get; private set; }
+
+	public AudioClip SpawnSFX;
 
 	private void Awake() {
 		PhysicsCollider = GetComponent<Collider2D>();
@@ -36,9 +39,12 @@ public abstract class Minion : MonoBehaviour {
 
 	public virtual void Setup() {  // Called before start
 		RB = GetComponent<Rigidbody2D>();
+		SoundTrigger = GetComponent<SoundTrigger>();
 		Hero = FindObjectOfType<Hero>();
 
 		TimePlaced = Time.realtimeSinceStartup;
+
+		if (SpawnSFX != null) SoundTrigger.PlayClip(SpawnSFX);
 	}
 
 	private void OnCollisionEnter2D(Collision2D collision) {
@@ -80,7 +86,6 @@ public abstract class Minion : MonoBehaviour {
 			qb.Kick(fuseParent);
 			return;
 		}
-
 	}
 
 	protected void IsInteractedFrom(Minion minionA) {  // this is minionB
@@ -100,8 +105,7 @@ public abstract class Minion : MonoBehaviour {
 	}
 
 	protected virtual void OnHitHero(Health heroHealth) {
-		Debug.Log($"Hit by {name}");
 		heroHealth.TakeDamage(ContactDmg);
+		Destroy(gameObject);
 	}
-
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Quarterback : Minion {
 
 	public Vector2 FixedVelocity;
+	public AudioClip KickSFX;
 
 	private void FixedUpdate() {
 		if (!IsPassive && IsLanded) {
@@ -17,6 +18,7 @@ public class Quarterback : Minion {
 		if (minionB is Quarterback qbB) {
 			FixedVelocity += qbB.FixedVelocity;
 		}
+		if (KickSFX != null) SoundTrigger.PlayClip(KickSFX);
 		minionB.Fly();
 		minionB.CanLand = false;
 		minionB.RB.velocity += new Vector2(-25, 5);

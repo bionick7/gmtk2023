@@ -24,5 +24,4 @@ public class Spikey : Minion {
 		minionB.Land();
 		holdingOffset = heldObjectRB.position - RB.position;
 	}
-
 }

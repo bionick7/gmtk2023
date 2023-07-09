@@ -3,16 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour {
+    private SoundTrigger SoundTrigger;
+
     [Header("Set Properties")]
-    [SerializeField] private int healthMax;
+    public int healthMax;
     //[SerializeField] LayerMask dammageContacts;
-    [SerializeField] private LayerMask destroyContacts;
+    public LayerMask destroyContacts;
 
     [Header("Internal")]
-    [SerializeField] int healthCurrent;
+    public int healthCurrent;
+
+    public bool AutoKill = true;
+    public bool isDead = false;
+
+    public AudioClip DieSFX;
 
     private void Awake() {
         healthCurrent = healthMax;
+    }
+
+    private void Start() {
+        SoundTrigger = GetComponent<SoundTrigger>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
@@ -22,17 +33,26 @@ public class Health : MonoBehaviour {
         //}
 
         if ((layerMask & destroyContacts) != 0) {
-            Destroy(gameObject);
+            Die();
         }
     }
 
     private void CheckDeath() {
-        if(healthCurrent <= 0)
-            Destroy(gameObject);
+        if(healthCurrent <= 0) {
+            Die();
+        }
     }
 
     public void TakeDamage(int amount = 1) {
         healthCurrent -= amount;
         CheckDeath();
+    }
+
+    private void Die() {
+        isDead = true;
+        if (AutoKill) Destroy(gameObject);
+        if (SoundTrigger != null && DieSFX != null) {
+            SoundTrigger.PlayClip(DieSFX);
+        }
     }
 }

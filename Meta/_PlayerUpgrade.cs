@@ -18,6 +18,6 @@ public class _PlayerUpgrade : _MetaData
     //Sprite icon;
 
     public int level = 0;
-    public List<LevelData> levels = new();
+    //public List<LevelData> levels = new();
     
 }

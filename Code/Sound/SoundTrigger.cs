@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class SoundTrigger : MonoBehaviour
 {
-    public void PlayClip(AudioClip clip)
-    {
+    public void PlayClip(AudioClip clip) {
         SoundManager.Instance.PlayClip(clip);
     }
 
-    public void PlayMusic(AudioClip clip)
-    {
+    public void PlayMusic(AudioClip clip) {
         SoundManager.Instance.PlayMusic(clip);
     }
 
-    public void StopMusic()
-    {
+    public void StopMusic() {
         SoundManager.Instance.StopMusic();
+    }
+
+    public void PlayClipVariation(AudioClip clip, int variations) {
+        SoundManager.Instance.PlayClipVariation(clip, variations);
     }
 }

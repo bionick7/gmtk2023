@@ -35,4 +35,18 @@ public class SoundManager : MonoBehaviour
     {
         source.PlayOneShot(clip);
     }
+
+    public void PlayClipVariation(AudioClip clip, int variationCount) {
+        // assumes variations are equally spaced
+        int variationIndex = Random.Range(0, variationCount);
+        StartCoroutine(PlayTime(clip, clip.length / (float)variationCount * variationIndex, clip.length / (float)variationCount));
+    }
+
+    private IEnumerator PlayTime(AudioClip clip, float from, float dt) {
+        source.time = from;
+        source.clip = clip;
+        source.Play();
+        yield return new WaitForSecondsRealtime(dt);
+        source.Stop();
+    }
 }

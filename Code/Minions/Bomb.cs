@@ -14,6 +14,9 @@ public class Bomb : Minion {
 
 	private float ExplostionCountdown = 0f;
 	public bool IsTicking = true;
+	private bool IsExploding = false;
+
+	public AudioClip ExplodeSFX;
 
 	public override void Setup() {
 		base.Setup();
@@ -38,19 +41,23 @@ public class Bomb : Minion {
 	}
 
 	protected override void OnHitHero(Health heroHealth) {
-		base.OnHitHero(heroHealth);
-		Explode();
+		//base.OnHitHero(heroHealth);
+		if (!IsExploding) {
+			Explode();
+		}
 	}
 
 	private void Explode() {
-		// TODO: animation
-		Debug.Log("Boom");
+		if (ExplodeSFX != null) {
+			SoundTrigger.PlayClip(ExplodeSFX);
+		}
 		foreach (Health health in FindObjectsOfType<Health>()) {  // Explosion is indiscriminate
 			if (health.gameObject != gameObject && (health.transform.position - transform.position).magnitude <= ExplostionRadius) {
 				health.TakeDamage(Dammage);
 			}
 		}
 		IsTicking = false;
+		IsExploding = true;
 		StartCoroutine(ExplostionAnimation());
 	}
 
