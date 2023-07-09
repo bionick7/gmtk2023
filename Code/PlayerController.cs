@@ -45,7 +45,8 @@ public class PlayerController : MonoBehaviour
         // Check Combination or Special Placement (ghost rules)
 
         // Check for Player Input to Place/Confirm
-        if (Input.GetMouseButtonUp(0)) {
+        if (Input.GetMouseButtonUp(0))
+        {
             PlaceHoldObject();
         }
     }
@@ -68,13 +69,16 @@ public class PlayerController : MonoBehaviour
         return minionCountCurrent < minionCountMax;
     }
 
-    private void PlaceHoldObject() {
+    private void PlaceHoldObject()
+    {
         // Check Minion Count --> Need to highlight red
-        if (!holdObject || !CheckMinionCount()) {
+        if (!holdObject || !CheckMinionCount())
+        {
             return;
         }
 
-        if (!ghost.isInsideGhostField) {
+        if (!ghost.isInsideGhostField)
+        {
             return;
         }
 
@@ -89,12 +93,14 @@ public class PlayerController : MonoBehaviour
         spawnRB.position = ghost.spawnPosition;
         Debug.Log($"Launch {spawn} with v = {ghost.spawnVelocity}");
         DestroyCallback destroy_callback = spawn.GetComponent<DestroyCallback>();
-        destroy_callback.Subscribe(() => {
+        destroy_callback.Subscribe(() =>
+        {
             minionCountCurrent--;
             UpdateCounterText();
         });
 
-        if (compagnion != null) {
+        if (compagnion != null)
+        {
             spawn.GetComponent<Minion>().FuseTo(compagnion.GetComponent<Minion>());
         }
 
@@ -108,6 +114,17 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateCounterText()
     {
+        if (!spawnCounterText)
+        {   
+            // Check for the Spawn Counter
+            GameObject spawnCounter = GameObject.Find("Spawn Counter - Text");
+
+            if (!spawnCounter)
+                return;
+
+            spawnCounterText = spawnCounter.GetComponent<TextMeshProUGUI>();
+        }
+
         string text = minionCountCurrent.ToString() + "/" + minionCountMax.ToString();
         spawnCounterText.text = text;
     }
