@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     // This way we can access things like placement rules or what unit to spawn.
     private MinionData selectedMinion;
 
-    private GameObject holdObject;
+    [SerializeField] private GameObject holdObject;
     private GhostPlacement ghost;
 
     // Private References
@@ -54,9 +54,11 @@ public class PlayerController : MonoBehaviour
     private void CancelHoldObject()
     {
         // Right Click --> Remove Hold Object
-        if (Input.GetMouseButtonUp(1) && holdObject)
+        if (Input.GetMouseButtonUp(1))
         {
-            Destroy(holdObject);
+            if (holdObject) {
+                Destroy(holdObject);
+            }
 
             // Reset back to Default Timescale
             SetTimeScale(1f);
@@ -82,15 +84,15 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        Destroy(holdObject);
-
         // ~~Do~interactions~here~~ Actually, deviate to Minion.FuseTo(_)
         GameObject compagnion = ghost.targetMinion;
+        Destroy(holdObject);
 
         GameObject spawn = Instantiate(selectedMinion.minionPrefab, mousePosition, Quaternion.identity);
-        Rigidbody2D spawnRB = spawn.GetComponent<Rigidbody2D>();
-        spawnRB.velocity = ghost.spawnVelocity;
-        spawnRB.position = ghost.spawnPosition;
+        Minion spawnMinon = spawn.GetComponent<Minion>();
+        spawnMinon.Setup();
+        spawnMinon.RB.velocity = ghost.spawnVelocity;
+        spawnMinon.RB.position = ghost.spawnPosition;
         Debug.Log($"Launch {spawn} with v = {ghost.spawnVelocity}");
         DestroyCallback destroy_callback = spawn.GetComponent<DestroyCallback>();
         destroy_callback.Subscribe(() =>
@@ -104,12 +106,15 @@ public class PlayerController : MonoBehaviour
             spawn.GetComponent<Minion>().FuseTo(compagnion.GetComponent<Minion>());
         }
 
+
         // Update Count and Text
         minionCountCurrent++;
         UpdateCounterText();
 
         // Reset back to Default Timescale
-        SetTimeScale(1f);
+        if (minionCountCurrent == minionCountMax) {
+            SetTimeScale(1f);
+        }
     }
 
     public void UpdateCounterText()

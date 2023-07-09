@@ -25,7 +25,6 @@ public class Hero : MonoBehaviour {
 
     public MovementState MovState = MovementState.Moving;
 
-    public Transform RaycastOrigin;
 
     private Rigidbody2D RB;
     [HideInInspector] public Health Health;
@@ -72,15 +71,12 @@ public class Hero : MonoBehaviour {
                         Jump();
                     }
                 }
-                if (RB.position.y <= FloorHeight && Time.time > ExpectedJumpZenith) {
-                    RB.position = new Vector2(RB.position.x, FloorHeight);
-                    Velocity = new Vector2(HoriziontalSpeed, 0);
-                    MovState = MovementState.Moving;
-                    UsedDoubleJump = false;
-                    Debug.Log("Landing");
+                /*if (RB.position.y <= FloorHeight && Time.time > ExpectedJumpZenith) {
+                    Land();
                 } else {
                     Velocity.y -= Gravity * Time.fixedDeltaTime;
-                }
+                }*/
+                Velocity.y -= Gravity * Time.fixedDeltaTime;
                 break; }
         }
         Vector2 p = RB.position + Velocity * Time.fixedDeltaTime;
@@ -89,6 +85,7 @@ public class Hero : MonoBehaviour {
 
     private void Jump() {
         MovState = MovementState.Jumping;
+        RB.bodyType = RigidbodyType2D.Dynamic;
         float airTime = JumpDistance / HoriziontalSpeed;
         float v_y = airTime * Gravity / 2f;
         Velocity = new Vector2(HoriziontalSpeed, v_y);
@@ -96,15 +93,23 @@ public class Hero : MonoBehaviour {
         //Debug.Log($"v = {Velocity}");
     }
 
-    /*private void OnCollisionEnter2D(Collision2D collision) {
+    private void Land() {
+        RB.position = new Vector2(RB.position.x, FloorHeight);
+        Velocity = new Vector2(HoriziontalSpeed, 0);
+        MovState = MovementState.Moving;
+        RB.bodyType = RigidbodyType2D.Kinematic;
+        UsedDoubleJump = false;
+        Debug.Log("Landing");
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision) {
         //Debug.Log($"Hit {collision.gameObject}");
         if (MovState != MovementState.Jumping || Time.time < ExpectedJumpZenith) {
             return;
         }
         if ((1 << collision.gameObject.layer & TerrainLayerMask) != 0) {
-            MovState = MovementState.Moving;
-            RB.bodyType = RigidbodyType2D.Kinematic;
+            Land();
         }
-    }*/
+    }
 }
 

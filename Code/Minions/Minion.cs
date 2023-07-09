@@ -14,7 +14,7 @@ public abstract class Minion : MonoBehaviour {
 	protected Hero Hero;
 
 	public bool CanLand = true;  // If true, this minion will disable physics as soon as it hits the ground
-	public bool CanFuseAtRuntime = true;  // Is true for e.g. the quarterback
+	public bool CanInteractAtRuntime = true;  // Is true for e.g. the quarterback
 	[SerializeField] private int ContactDmg = 0;
 	[SerializeField] protected Collider2D TriggerCollider;
 
@@ -25,7 +25,7 @@ public abstract class Minion : MonoBehaviour {
 	protected Collider2D PhysicsCollider;
 
 	public float TimePlaced = 0;
-	public Minion FuseParent { get; private set; }
+	public bool HasInteracted { get; private set; }
 
 	private void Awake() {
 		PhysicsCollider = GetComponent<Collider2D>();
@@ -34,7 +34,7 @@ public abstract class Minion : MonoBehaviour {
 		heroLayerMask = LayerMask.GetMask("Hero");
 	}
 
-	protected virtual void Start() {
+	public virtual void Setup() {  // Called before start
 		RB = GetComponent<Rigidbody2D>();
 		Hero = FindObjectOfType<Hero>();
 
@@ -44,15 +44,14 @@ public abstract class Minion : MonoBehaviour {
 	private void OnCollisionEnter2D(Collision2D collision) {
 		int collisionLayer = 1 << collision.gameObject.layer;
 		if ((collisionLayer & terrainLayerMask) != 0 && CanLand) {
-			IsLanded = true;
-			OnLand();
+			Land();
 		}
 
-		if ((collisionLayer & minionLayerMask) != 0 && CanFuseAtRuntime && FuseParent == null) {
+		if ((collisionLayer & minionLayerMask) != 0 && CanInteractAtRuntime && HasInteracted) {
 			Minion compagnion = collision.gameObject.GetComponent<Minion>();
 			if (compagnion != this && compagnion != null) {
 				if (TimePlaced > compagnion.TimePlaced) {
-					FuseTo(compagnion);
+					InteractTo(compagnion);
 				}
 			}
 		}
@@ -63,21 +62,41 @@ public abstract class Minion : MonoBehaviour {
 		}
 	}
 
-	public virtual void FuseTo(Minion minionB) {  // this is minionA
+	public void InteractTo(Minion fuseParent) {  // this is minionA
 		// Fuse A to B
-		FuseParent = minionB;
-		Physics2D.IgnoreCollision(PhysicsCollider, minionB.PhysicsCollider);
-		minionB.GetFusedTo(this);
+		HasInteracted = true;
+		if (!Physics2D.GetIgnoreCollision(PhysicsCollider, fuseParent.PhysicsCollider)) {
+			Physics2D.IgnoreCollision(PhysicsCollider, fuseParent.PhysicsCollider);
+		}
+		fuseParent.IsInteractedFrom(this);
+
+		// Rules in order of importance
+		if (fuseParent is Spikey spikey) {
+			spikey.Carry(this);
+			return;
+		}
+
+		if (this is Quarterback qb) {
+			qb.Kick(fuseParent);
+			return;
+		}
+
 	}
 
-	protected virtual void GetFusedTo(Minion minionA) {  // this is minionB
-		// Conjugate of FuseTo(_)
+	protected void IsInteractedFrom(Minion minionA) {  // this is minionB
+		// Conjugate of InteractTo(_)
 
 	}
 
-	public virtual void OnLand() {
-		RB.bodyType = RigidbodyType2D.Kinematic;
+	public virtual void Fly() {
+		RB.bodyType = RigidbodyType2D.Dynamic;
+		IsLanded = false;
+	}
+
+	public virtual void Land() {
+		RB.bodyType = RigidbodyType2D.Dynamic;
 		RB.useFullKinematicContacts = true;
+		IsLanded = true;
 	}
 
 	protected virtual void OnHitHero(Health heroHealth) {

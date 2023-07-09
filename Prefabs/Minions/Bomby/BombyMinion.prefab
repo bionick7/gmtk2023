@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: -7681176133322016272}
   - component: {fileID: 1593719465199928894}
   - component: {fileID: 2075856989132663865}
-  m_Layer: 12
+  m_Layer: 7
   m_Name: BombyMinion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,25 +186,6 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -228,12 +209,6 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: cf29317401d825948b04e50ab1207f86, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -263,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanLand: 0
-  CanFuseAtRuntime: 0
+  CanInteractAtRuntime: 1
   ContactDmg: 0
   TriggerCollider: {fileID: 0}
   IsLanded: 0
@@ -271,7 +246,7 @@ MonoBehaviour:
   IsPassive: 0
   TimePlaced: 0
   ExplostionRadius: 3
-  Dammage: 3
+  Dammage: 1
   TimeUntilBoom: 2
   InitVelocity: {x: 0, y: 0}
   ExplostionRadiusIndicator: {fileID: 252054844588525743}
@@ -367,7 +342,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -2413806693520163455, guid: b92acddc9d5759b4a9e9f46317bcd737, type: 3}
   m_Color: {r: 1, g: 0, b: 0.1746602, a: 1}
   m_FlipX: 0
@@ -473,25 +448,6 @@ CircleCollider2D:
   m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0

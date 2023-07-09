@@ -15,8 +15,8 @@ public class Bomb : Minion {
 	private float ExplostionCountdown = 0f;
 	public bool IsTicking = true;
 
-	protected override void Start() {
-		base.Start();
+	public override void Setup() {
+		base.Setup();
 
 		ExplostionCountdown = TimeUntilBoom;
 		CountdownDialMask = GetComponentInChildren<SpriteMask>();
@@ -44,11 +44,13 @@ public class Bomb : Minion {
 
 	private void Explode() {
 		// TODO: animation
+		Debug.Log("Boom");
 		foreach (Health health in FindObjectsOfType<Health>()) {  // Explosion is indiscriminate
 			if (health.gameObject != gameObject && (health.transform.position - transform.position).magnitude <= ExplostionRadius) {
 				health.TakeDamage(Dammage);
 			}
 		}
+		IsTicking = false;
 		StartCoroutine(ExplostionAnimation());
 	}
 
