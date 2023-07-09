@@ -6,6 +6,8 @@ public class Gun : MonoBehaviour {
 
     private const int MAX_BULLETS = 100;
 
+    private SoundTrigger SoundTrigger;
+
     private Bullet[] Pool = new Bullet[MAX_BULLETS];
     private int Iterator = 0;
 
@@ -13,8 +15,13 @@ public class Gun : MonoBehaviour {
 
     public GameObject BulletPrefab;
     public Hero Hero;
+    public float BulletInterval = 1f;
+    public float BulletSpeed = 50f;
+
+    public AudioClip Shot;
 
     private void Start() {
+        SoundTrigger = GetComponent<SoundTrigger>();
         for (int i=0; i < MAX_BULLETS; i++) {
             GameObject bulletObj = Instantiate<GameObject>(BulletPrefab, transform.position, Quaternion.identity);
             Bullet bullet = bulletObj.GetComponent<Bullet>();
@@ -32,8 +39,9 @@ public class Gun : MonoBehaviour {
                 angle = -Mathf.PI / 4f;
             }
             Bullet bullet = SpawnBulletFromPool();
-            bullet.Velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * 50f;
-            yield return new WaitForSeconds(.1f);
+            bullet.Velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * BulletSpeed;
+            if (Shot != null) SoundTrigger.PlayClipVariation(Shot, 1);
+            yield return new WaitForSeconds(BulletInterval);
         }
     }
 

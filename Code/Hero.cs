@@ -20,30 +20,43 @@ public class Hero : MonoBehaviour {
     public float Gravity = 0;
     public float FloorHeight = 0;
 
-    public bool CanDoubleJump = false;
     public bool UsedDoubleJump = false;
-
     public MovementState MovState = MovementState.Moving;
+    public MetaData SceneCommunication;
 
+    public float HeroOffsetX;
 
     private Rigidbody2D RB;
+    private SoundTrigger SoundTrigger;
     [HideInInspector] public Health Health;
     private Vector2 Velocity = Vector2.zero;
+
+    public AudioClip JumpSFX;
 
     private void Awake() {
         RaycastCollisionLayerMask = LayerMask.GetMask("Minion");
         TerrainLayerMask = LayerMask.GetMask("Terrain");
+
+        SceneCommunication.ActiveHero = this;
     }
 
     private void Start() {
         RB = GetComponent<Rigidbody2D>();
         Health = GetComponent<Health>();
+        SoundTrigger = GetComponent<SoundTrigger>();
+
+        HeroOffsetX = transform.position.x;
+
+        Health.healthMax = Health.healthCurrent = SceneCommunication.HeroHealth;
     }
 
-    /*private void Update() {
-        Vector2 tgtVelocity = new Vector2(HoriziontalSpeed, 0);
-        transform.position += (Vector3) tgtVelocity * Time.deltaTime;  // Camera jitters if we only update rb position on fixedUpdate, so we do both
-    }*/
+    private void Update() {
+        // Update communication stuff
+        SceneCommunication.HeroProgress = (transform.position.x - HeroOffsetX + HoriziontalSpeed) / SceneCommunication.ArenaWidth;
+        if (Health.healthCurrent <= 0) {
+            SceneCommunication.PlayerIsWon = true;
+        }
+    }
 
     private void FixedUpdate() {
         switch (MovState) {
@@ -54,7 +67,7 @@ public class Hero : MonoBehaviour {
                 RaycastHit2D hit = Physics2D.BoxCast(RB.position, Vector2.one, 0, Vector2.right, castDistance, RaycastCollisionLayerMask);
                 if (hit) {
                     Debug.DrawLine(transform.position, hit.point);
-                    float relative_vel_x = HoriziontalSpeed - hit.rigidbody.velocity.x;
+                    float relative_vel_x = HoriziontalSpeed - (hit.rigidbody?.velocity ?? Vector2.zero).x;
                     float airTimeRequired = hit.distance / relative_vel_x;
                     float airTime = JumpDistance / HoriziontalSpeed;
                     if (airTimeRequired <= airTime) {
@@ -63,7 +76,7 @@ public class Hero : MonoBehaviour {
                 }
                 break; }
             case MovementState.Jumping: { 
-                if (CanDoubleJump && !UsedDoubleJump && Time.time > ExpectedJumpZenith) {
+                if (SceneCommunication.HeroHasDoubleJump && !UsedDoubleJump && Time.time > ExpectedJumpZenith) {
                     RaycastHit2D hit = Physics2D.BoxCast(RB.position, Vector2.one * 1.5f, 0, Velocity.normalized, 100, RaycastCollisionLayerMask);
                     Debug.DrawRay(RB.position, Velocity.normalized * 100);
                     if (hit) {
@@ -90,6 +103,7 @@ public class Hero : MonoBehaviour {
         float v_y = airTime * Gravity / 2f;
         Velocity = new Vector2(HoriziontalSpeed, v_y);
         ExpectedJumpZenith = Time.time + airTime / 2;
+        SoundTrigger.PlayClip(JumpSFX);
         //Debug.Log($"v = {Velocity}");
     }
 

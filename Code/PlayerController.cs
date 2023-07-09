@@ -7,15 +7,15 @@ using JetBrains.Annotations;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private int minionCountCurrent = 0;
-    [SerializeField] private int minionCountMax = 3;
-
     [SerializeField] private TextMeshProUGUI spawnCounterText;
+    [SerializeField] private GameObject holdObject;
+
+    public MetaData MetaData;
 
     // Referencing this so we can still access the minion data.
     // This way we can access things like placement rules or what unit to spawn.
     private MinionData selectedMinion;
 
-    [SerializeField] private GameObject holdObject;
     private GhostPlacement ghost;
 
     // Private References
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
     private bool CheckMinionCount()
     {
-        return minionCountCurrent < minionCountMax;
+        return minionCountCurrent < MetaData.MaxMinionAmount;
     }
 
     private void PlaceHoldObject()
@@ -86,7 +86,8 @@ public class PlayerController : MonoBehaviour
 
         // ~~Do~interactions~here~~ Actually, deviate to Minion.FuseTo(_)
         GameObject compagnion = ghost.targetMinion;
-        Destroy(holdObject);
+        
+        //Destroy(holdObject);
 
         GameObject spawn = Instantiate(selectedMinion.minionPrefab, mousePosition, Quaternion.identity);
         Minion spawnMinon = spawn.GetComponent<Minion>();
@@ -112,7 +113,7 @@ public class PlayerController : MonoBehaviour
         UpdateCounterText();
 
         // Reset back to Default Timescale
-        if (minionCountCurrent == minionCountMax) {
+        if (minionCountCurrent == MetaData.MaxMinionAmount) {
             SetTimeScale(1f);
         }
     }
@@ -130,7 +131,7 @@ public class PlayerController : MonoBehaviour
             spawnCounterText = spawnCounter.GetComponent<TextMeshProUGUI>();
         }
 
-        string text = minionCountCurrent.ToString() + "/" + minionCountMax.ToString();
+        string text = $"{minionCountCurrent} /{MetaData.MaxMinionAmount}";
         spawnCounterText.text = text;
     }
 

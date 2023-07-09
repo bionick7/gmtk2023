@@ -43,25 +43,6 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -95,7 +76,8 @@ GameObject:
   - component: {fileID: -7681176133322016272}
   - component: {fileID: 2075856989132663865}
   - component: {fileID: 4191383921973894060}
-  m_Layer: 12
+  - component: {fileID: 8228986639643378555}
+  m_Layer: 7
   m_Name: QuarterbackMinion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,25 +162,6 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -222,12 +185,6 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -261,6 +218,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   healthCurrent: 0
+  AutoKill: 1
+  isDead: 0
+  DieSFX: {fileID: 8300000, guid: 83e7bdb3706d45f4d918c70389d2aa23, type: 3}
 --- !u!114 &4191383921973894060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,4 +241,18 @@ MonoBehaviour:
   RB: {fileID: 0}
   IsPassive: 0
   TimePlaced: 0
+  SpawnSFX: {fileID: 8300000, guid: b09719544ab55084f843da13fcbe08a0, type: 3}
   FixedVelocity: {x: -10, y: 0}
+  KickSFX: {fileID: 0}
+--- !u!114 &8228986639643378555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2684254792315651856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d0cd07497501334d8858c8f295c1060, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

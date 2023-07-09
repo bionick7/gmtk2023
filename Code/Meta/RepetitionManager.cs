@@ -11,13 +11,14 @@ public class RepetitionManager : MonoBehaviour {
     public float TileWidth = 0;
 
     private readonly GameObject[] TilePool = new GameObject[MAX_TILES];
-    private float CurrentMaxVisibleX = 0;
+    private float CurrentMaxVisibleX = -10;
 
     private void Start() {
         // Populate pool
         for (int i=0; i < MAX_TILES; i++) {
             TilePool[i] = Instantiate(TilePrefab);
             TilePool[i].SetActive(false);
+            TilePool[i].transform.position = new Vector3(-1000, 0, 0);
         }
     }
 
@@ -41,7 +42,7 @@ public class RepetitionManager : MonoBehaviour {
 
     public void UncoverPosition(float maxVisibleX) {
         // Can be called by the camera
-        if (maxVisibleX + TileWidth + 5 > CurrentMaxVisibleX) {
+        while (maxVisibleX + TileWidth + 5 > CurrentMaxVisibleX) {
             GameObject tile = GetTile();
             tile.SetActive(true);
             tile.transform.position = new Vector3(CurrentMaxVisibleX, TileSpawnY, 0);  // Assumes that tile origin is at the left

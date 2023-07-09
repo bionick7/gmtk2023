@@ -118,3 +118,4 @@ MonoBehaviour:
   ImpactLayermask:
     serializedVersion: 2
     m_Bits: 72
+  Velocity: {x: 0, y: 0}
