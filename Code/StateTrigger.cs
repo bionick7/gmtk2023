@@ -8,4 +8,9 @@ public class StateTrigger : MonoBehaviour
     {
         ManageScene.Instance.LoadScene(name);
     }
+
+    public void AddScene(string name)
+    {
+        ManageScene.Instance.AddScene(name);
+    }
 }
