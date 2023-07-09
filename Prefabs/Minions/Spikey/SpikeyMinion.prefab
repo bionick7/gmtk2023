@@ -201,7 +201,7 @@ MonoBehaviour:
   destroyContacts:
     serializedVersion: 2
     m_Bits: 0
-  healthCurrent: 100
+  healthCurrent: 1
 --- !u!1 &2099008947852882456
 GameObject:
   m_ObjectHideFlags: 0
